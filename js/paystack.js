@@ -87,10 +87,41 @@ value:customerPhone
 
 callback:function(response){
 
-alert("Payment Successful");
+const orderRef = push(ref(db,"orders"));
+
+set(orderRef,{
+
+customerName: customerName,
+
+customerPhone: customerPhone,
+
+customerEmail: customerEmail,
+
+customerState: customerState,
+
+customerCity: customerCity,
+
+customerAddress: customerAddress,
+
+cart: cart,
+
+amount: total,
+
+paymentReference: response.reference,
+
+status: "Paid",
+
+createdAt: Date.now()
+
+}).then(()=>{
+
+localStorage.removeItem("cart");
+
+localStorage.setItem("cartCount",0);
 
 window.location="payment-success.html";
 
+});
 },
 
 onClose:function(){

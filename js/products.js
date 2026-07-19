@@ -1,69 +1,49 @@
-// ===============================
-// PRINCE JEWELRIES PLUG
-// Products
-// ===============================
+import { db } from "../firebase/firebase-config.js";
 
-const products = [
+import {
+ref,
+onValue
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
-{
-id:1,
-name:"Luxury Gold Necklace",
-price:85000,
-oldPrice:100000,
-image:"images/products/gold-necklace.jpg",
-badge:"BEST SELLER"
-},
+const container = document.getElementById("product-container");
 
-{
-id:2,
-name:"Dubai Gold Ring",
-price:45000,
-oldPrice:60000,
-image:"images/products/gold-ring.jpg",
-badge:"NEW"
-},
+const productRef = ref(db,"products");
 
-{
-id:3,
-name:"Luxury Gold Wristwatch",
-price:120000,
-oldPrice:150000,
-image:"images/products/gold-watch.jpg",
-badge:"HOT"
-},
+onValue(productRef,(snapshot)=>{
 
-{
-id:4,
-name:"Gold Earrings Set",
-price:35000,
-oldPrice:50000,
-image:"images/products/gold-earring.jpg",
-badge:"SALE"
-}
+container.innerHTML="";
 
-];
+snapshot.forEach((child)=>{
 
-const container=document.getElementById("product-container");
-
-if(container){
-
-products.forEach(product=>{
+const product=child.val();
 
 container.innerHTML+=`
 
 <div class="product-card">
 
-<div class="badge">${product.badge}</div>
-
 <img src="${product.image}" alt="${product.name}">
 
 <h3>${product.name}</h3>
 
-<p class="old-price">₦${product.oldPrice.toLocaleString()}</p>
+<p class="old-price">
 
-<h2>₦${product.price.toLocaleString()}</h2>
+₦${Number(product.oldPrice).toLocaleString()}
 
-<button onclick="addToCart('${product.name}',${product.price})">
+</p>
+
+<h2>
+
+₦${Number(product.price).toLocaleString()}
+
+</h2>
+
+<p>
+
+${product.description}
+
+</p>
+
+<button onclick="addToCart('${child.key}')">
 
 Add To Cart
 
@@ -75,23 +55,16 @@ Add To Cart
 
 });
 
-}
+});
 
-function addToCart(name,price){
+function addToCart(id){
 
 let cart=JSON.parse(localStorage.getItem("cart"))||[];
 
-cart.push({
-name,
-price
-});
+cart.push(id);
 
 localStorage.setItem("cart",JSON.stringify(cart));
 
-localStorage.setItem("cartCount",cart.length);
-
-alert(name+" added to cart successfully.");
-
-location.reload();
+alert("Added to Cart Successfully");
 
 }

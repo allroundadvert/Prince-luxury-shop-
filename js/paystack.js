@@ -1,3 +1,10 @@
+import { db } from "../firebase/firebase-config.js";
+
+import {
+ref,
+push,
+set
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 const PAYSTACK_PUBLIC_KEY = "pk_live_33b331a205d88d45cf78059c0b009354f7d1fb17";
 
 function payNow(){

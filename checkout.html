@@ -1,1 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Checkout | Prince Jewelries Plug</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+💎 PRINCE JEWELRIES PLUG
+
+</div>
+
+</header>
+
+<section class="products" style="margin-top:120px;">
+
+<h2>Delivery Information</h2>
+
+<form id="checkoutForm">
+
+<input
+type="text"
+id="customerName"
+placeholder="Full Name"
+required>
+
+<br><br>
+
+<input
+type="tel"
+id="customerPhone"
+placeholder="Phone Number"
+required>
+
+<br><br>
+
+<input
+type="email"
+id="customerEmail"
+placeholder="Email Address"
+required>
+
+<br><br>
+
+<input
+type="text"
+id="customerState"
+placeholder="State"
+required>
+
+<br><br>
+
+<input
+type="text"
+id="customerCity"
+placeholder="City"
+required>
+
+<br><br>
+
+<textarea
+id="customerAddress"
+placeholder="Full Delivery Address"
+required></textarea>
+
+<br><br>
+
+<button
+type="button"
+class="shop-btn"
+onclick="payNow()">
+
+Pay Now
+
+</button>
+
+</form>
+
+</section>
+
+<script>
+
+function payNow(){
+
+alert("Paystack integration will be connected in the next step.");
+
+}
+
+</script>
+
+<script src="js/main.js"></script>
+
+</body>
+
+</html>

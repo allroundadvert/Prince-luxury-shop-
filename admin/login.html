@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Login</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+
+<body>
+
+<section class="products" style="margin-top:100px; max-width:500px; margin-left:auto; margin-right:auto;">
+
+<h2>Admin Login</h2>
+
+<input
+type="text"
+id="username"
+placeholder="Username">
+
+<br><br>
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<br><br>
+
+<button class="shop-btn" onclick="login()">
+
+Login
+
+</button>
+
+</section>
+
+<script>
+
+function login(){
+
+const username=document.getElementById("username").value;
+
+const password=document.getElementById("password").value;
+
+if(username==="admin" && password==="123456"){
+
+localStorage.setItem("admin","true");
+
+window.location="dashboard.html";
+
+}else{
+
+alert("Incorrect Username or Password");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

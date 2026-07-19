@@ -1,1 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | Prince Jewelries Plug</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+💎 PRINCE JEWELRIES PLUG ADMIN
+
+</div>
+
+</header>
+
+<section class="products" style="margin-top:120px;">
+
+<h2>Upload New Product</h2>
+
+<input
+type="text"
+id="productName"
+placeholder="Product Name">
+
+<br><br>
+
+<input
+type="number"
+id="productPrice"
+placeholder="Product Price">
+
+<br><br>
+
+<input
+type="number"
+id="oldPrice"
+placeholder="Old Price">
+
+<br><br>
+
+<input
+type="number"
+id="productQuantity"
+placeholder="Quantity Available">
+
+<br><br>
+
+<input
+type="text"
+id="productCategory"
+placeholder="Category">
+
+<br><br>
+
+<textarea
+id="productDescription"
+placeholder="Product Description"></textarea>
+
+<br><br>
+
+<input
+type="file"
+id="productImage">
+
+<br><br>
+
+<button
+class="shop-btn"
+onclick="uploadProduct()">
+
+Upload Product
+
+</button>
+
+</section>
+
+<section class="products">
+
+<h2>Uploaded Products</h2>
+
+<div id="adminProducts">
+
+No products uploaded yet.
+
+</div>
+
+</section>
+
+<script>
+
+function uploadProduct(){
+
+alert("Firebase upload will be connected in the next step.");
+
+}
+
+</script>
+
+</body>
+
+</html>

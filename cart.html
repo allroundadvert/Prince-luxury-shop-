@@ -1,1 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shopping Cart | Prince Jewelries Plug</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+<i class="fas fa-gem"></i>
+
+PRINCE JEWELRIES PLUG
+
+</div>
+
+<nav>
+
+<a href="index.html">Home</a>
+
+<a href="shop.html">Shop</a>
+
+<a href="checkout.html">Checkout</a>
+
+</nav>
+
+</header>
+
+<section class="products" style="margin-top:120px;">
+
+<h2>Your Shopping Cart</h2>
+
+<div id="cart-items"></div>
+
+<h2 id="total-price">Total: ₦0</h2>
+
+<br>
+
+<a href="checkout.html" class="shop-btn">
+
+Proceed to Checkout
+
+</a>
+
+</section>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+const cartItems = document.getElementById("cart-items");
+
+const totalPrice = document.getElementById("total-price");
+
+let total = 0;
+
+function displayCart(){
+
+cartItems.innerHTML = "";
+
+cart.forEach((item,index)=>{
+
+total += item.price;
+
+cartItems.innerHTML += `
+
+<div class="product-card">
+
+<h3>${item.name}</h3>
+
+<h2>₦${item.price.toLocaleString()}</h2>
+
+<button onclick="removeItem(${index})">
+
+Remove
+
+</button>
+
+</div>
+
+`;
+
+});
+
+totalPrice.innerHTML="Total: ₦"+total.toLocaleString();
+
+}
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+localStorage.setItem("cart",JSON.stringify(cart));
+
+localStorage.setItem("cartCount",cart.length);
+
+location.reload();
+
+}
+
+displayCart();
+
+</script>
+
+<script src="js/main.js"></script>
+
+</body>
+
+</html>

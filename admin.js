@@ -89,3 +89,14 @@ alert(error.message);
 }
 
 }
+const uploadBtn = document.getElementById("uploadBtn");
+
+if(uploadBtn){
+
+uploadBtn.addEventListener("click", () => {
+
+uploadProduct();
+
+});
+
+}

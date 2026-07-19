@@ -100,3 +100,61 @@ uploadProduct();
 });
 
 }
+import {
+remove,
+onValue
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+
+const adminProducts = document.getElementById("adminProducts");
+
+const productsRef = ref(db,"products");
+
+onValue(productsRef,(snapshot)=>{
+
+if(!adminProducts) return;
+
+adminProducts.innerHTML="";
+
+snapshot.forEach((child)=>{
+
+const product=child.val();
+
+adminProducts.innerHTML+=`
+
+<div class="product-card">
+
+<img src="${product.image}" width="120">
+
+<h3>${product.name}</h3>
+
+<p><strong>Price:</strong> ₦${Number(product.price).toLocaleString()}</p>
+
+<p><strong>Stock:</strong> ${product.quantity}</p>
+
+<p><strong>Category:</strong> ${product.category}</p>
+
+<button onclick="deleteProduct('${child.key}')">
+
+Delete
+
+</button>
+
+<hr>
+
+</div>
+
+`;
+
+});
+
+});
+
+window.deleteProduct = function(id){
+
+if(confirm("Delete this product?")){
+
+remove(ref(db,"products/"+id));
+
+}
+
+}

@@ -56,7 +56,7 @@ category:category,
 
 description:description,
 
-image:imageURL,
+image:image,
 
 createdAt:Date.now()
 

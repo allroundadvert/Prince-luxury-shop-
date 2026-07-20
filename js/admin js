@@ -1,18 +1,12 @@
-import { db, storage } from "./firebase.js";
+import { db } from "./firebase.js";
 
 import {
 ref,
 push,
-set,
-onValue,
-remove
+set
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-import {
-ref as storageRef,
-uploadBytes,
-getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
 const uploadBtn = document.getElementById("uploadBtn");
 
 if (uploadBtn) {
@@ -20,6 +14,7 @@ if (uploadBtn) {
 uploadBtn.addEventListener("click", uploadProduct);
 
 }
+
 
 async function uploadProduct() {
 
@@ -35,7 +30,8 @@ const category = document.getElementById("productCategory").value.trim();
 
 const description = document.getElementById("productDescription").value.trim();
 
-const image = document.getElementById("productImage").files[0];
+const image = document.getElementById("productImage").value.trim();
+
 
 if (!name || !price || !quantity || !category || !description || !image) {
 
@@ -45,33 +41,44 @@ return;
 
 }
 
-alert("All fields are filled. Upload process is starting...");
-
-const imageRef = storageRef(storage, "products/" + Date.now() + "_" + image.name);
-
-await uploadBytes(imageRef, image);
-
-const imageURL = await getDownloadURL(imageRef);
 
 const productRef = push(ref(db, "products"));
 
+
 await set(productRef, {
-    name: name,
-    price: price,
-    oldPrice: oldPrice,
-    quantity: quantity,
-    category: category,
-    description: description,
-    image: imageURL
+
+name: name,
+
+price: price,
+
+oldPrice: oldPrice,
+
+quantity: quantity,
+
+category: category,
+
+description: description,
+
+image: image
+
 });
+
 
 alert("Product uploaded successfully!");
 
+
 document.getElementById("productName").value = "";
+
 document.getElementById("productPrice").value = "";
+
 document.getElementById("oldPrice").value = "";
+
 document.getElementById("productQuantity").value = "";
+
 document.getElementById("productCategory").value = "";
+
 document.getElementById("productDescription").value = "";
+
 document.getElementById("productImage").value = "";
+
 }

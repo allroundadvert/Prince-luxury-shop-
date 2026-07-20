@@ -6,12 +6,6 @@ push,
 set
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
-import {
-ref as storageRef,
-uploadBytes,
-getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
-
 window.uploadProduct = async function(){
 
 const name=document.getElementById("productName").value.trim();

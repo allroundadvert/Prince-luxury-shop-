@@ -40,10 +40,10 @@ let cart=JSON.parse(localStorage.getItem("cart"))||[];
 let total=0;
 
 cart.forEach(item=>{
-
-total+=item.price;
-
+    total += Number(item.price || 0);
 });
+
+alert("Total = ₦" + total);
 
 let handler=PaystackPop.setup({
 

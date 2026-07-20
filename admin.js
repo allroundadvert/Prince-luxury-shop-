@@ -1,3 +1,4 @@
+alert("Admin JS connected");
 import { db } from "../firebase/firebase-config.js";
 
 import {

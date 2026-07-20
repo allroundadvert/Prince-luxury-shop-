@@ -38,11 +38,7 @@ return;
 
 try{
 
-const imageRef=storageRef(storage,"products/"+Date.now()+"_"+image.name);
 
-await uploadBytes(imageRef,image);
-
-const imageURL=await getDownloadURL(imageRef);
 
 const productRef=push(ref(db,"products"));
 

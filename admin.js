@@ -1,3 +1,4 @@
+alert("ADMIN JS IS RUNNING");
 import { db } from "../firebase/firebase-config.js";
 
 import {

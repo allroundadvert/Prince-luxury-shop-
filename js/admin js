@@ -1,1 +1,15 @@
+import { db, storage } from "./firebase.js";
 
+import {
+ref,
+push,
+set,
+onValue,
+remove
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+import {
+ref as storageRef,
+uploadBytes,
+getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";

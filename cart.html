@@ -60,7 +60,7 @@ Proceed to Checkout
 <script>
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
+alert("Cart Items: " + cart.length);
 const cartItems = document.getElementById("cart-items");
 
 const totalPrice = document.getElementById("total-price");

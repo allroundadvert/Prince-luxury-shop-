@@ -26,7 +26,7 @@ const category=document.getElementById("productCategory").value.trim();
 
 const description=document.getElementById("productDescription").value.trim();
 
-const image=document.getElementById("productImage").files[0];
+const image = document.getElementById("productImage").value.trim();
 
 if(!name || !price || !quantity || !category || !description || !image){
 

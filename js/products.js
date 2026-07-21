@@ -187,3 +187,10 @@ console.log(err);
 }
 
 };
+window.filterProducts = function(category){
+
+    currentCategory = category;
+
+    displayProducts();
+
+}

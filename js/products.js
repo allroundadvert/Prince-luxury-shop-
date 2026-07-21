@@ -12,12 +12,20 @@ const productRef = ref(db,"products");
 
 onValue(productRef,(snapshot)=>{
 
-container.innerHTML="";
+allProducts = [];
 
 snapshot.forEach((child)=>{
 
-const product=child.val();
+allProducts.push({
+id: child.key,
+...child.val()
+});
 
+});
+
+displayProducts();
+
+});
 container.innerHTML+=`
 
 <div class="product-card">

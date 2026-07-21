@@ -6,7 +6,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
 const container = document.getElementById("product-container");
-
 const productRef = ref(db, "products");
 
 let allProducts = [];
@@ -15,37 +14,53 @@ let currentCategory = "All";
 // LOAD PRODUCTS
 onValue(productRef, (snapshot) => {
 
-  allProducts = [];
+    allProducts = [];
 
-  snapshot.forEach((child) => {
+    snapshot.forEach((child) => {
 
-    allProducts.push({
-      id: child.key,
-      ...child.val()
+        allProducts.push({
+            id: child.key,
+            ...child.val()
+        });
+
     });
 
-  });
-
-  displayProducts();
+    displayProducts();
 
 });
 
 // DISPLAY PRODUCTS
 function displayProducts() {
 
-  container.innerHTML = "";
+    container.innerHTML = "";
 
-  allProducts.forEach((product) => {
+    allProducts.forEach(product => {
 
-    if (
-      currentCategory !== "All" &&
-      product.category !== currentCategory
-    ) {
-      return;
-    }
+        if (currentCategory !== "All") {
 
-    container.innerHTML += `
+            const category = (product.category || "").toLowerCase();
 
+            if (currentCategory === "Jewelries") {
+
+                if (
+                    !category.includes("jewel") &&
+                    !category.includes("ring") &&
+                    !category.includes("chain") &&
+                    !category.includes("necklace") &&
+                    !category.includes("bracelet") &&
+                    !category.includes("earring") &&
+                    !category.includes("watch")
+                ) {
+                    return;
+                }
+
+            } else if (category !== currentCategory.toLowerCase()) {
+                return;
+            }
+
+        }
+
+        container.innerHTML += `
 <div class="product-card">
 
 <img src="${product.image}" alt="${product.name}">
@@ -71,79 +86,73 @@ Add To Cart
 </button>
 
 </div>
-
 `;
 
-  });
+    });
 
 }
 
 // FILTER PRODUCTS
 window.filterProducts = function(category) {
 
-  currentCategory = category;
+    currentCategory = category;
 
-  displayProducts();
+    displayProducts();
 
 };
 
 // ADD TO CART
 window.addToCart = function(id) {
 
-  let selectedProduct = null;
+    let selectedProduct = null;
 
-  onValue(productRef, (snapshot) => {
+    onValue(productRef, (snapshot) => {
 
-    snapshot.forEach((child) => {
+        snapshot.forEach((child) => {
 
-      if (child.key === id) {
-        selectedProduct = child.val();
-      }
+            if (child.key === id) {
+                selectedProduct = child.val();
+            }
 
-    });
+        });
 
-    if (selectedProduct) {
+        if (selectedProduct) {
 
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-      cart.push({
+            cart.push({
+                id: id,
+                name: selectedProduct.name,
+                price: Number(selectedProduct.price),
+                image: selectedProduct.image,
+                description: selectedProduct.description
+            });
 
-        id: id,
-        name: selectedProduct.name,
-        price: Number(selectedProduct.price),
-        image: selectedProduct.image,
-        description: selectedProduct.description
+            localStorage.setItem("cart", JSON.stringify(cart));
+            localStorage.setItem("cartCount", cart.length);
 
-      });
+            alert("✅ Added to Cart Successfully");
 
-      localStorage.setItem("cart", JSON.stringify(cart));
+        }
 
-      localStorage.setItem("cartCount", cart.length);
-
-      alert("✅ Added to Cart Successfully");
-
-    }
-
-  }, { onlyOnce: true });
+    }, { onlyOnce: true });
 
 };
 
 // SHARE PRODUCT
 window.shareProduct = async function(name, price, description, image) {
 
-  try {
+    try {
 
-    const response = await fetch(image);
-    const blob = await response.blob();
-    const file = new File([blob], "product.jpg", {
-      type: blob.type
-    });
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const file = new File([blob], "product.jpg", {
+            type: blob.type
+        });
 
-    await navigator.share({
-
-      title: name,
-
-      text: `💎 ${name}
+        await navigator.share({
+            title: name,
+            text: `💎 ${name}
 
 💰 Price: ₦${price}
 
@@ -151,15 +160,11 @@ window.shareProduct = async function(name, price, description, image) {
 
 🛒 Buy Now:
 https://allroundadvert.github.io/Prince-luxury-shop-/shop.html`,
+            files: [file]
+        });
 
-      files: [file]
-
-    });
-
-  } catch (err) {
-
-    console.log(err);
-
-  }
+    } catch (err) {
+        console.log(err);
+    }
 
 };

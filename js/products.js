@@ -124,8 +124,10 @@ text: `💎 ${name}
 
 📝 ${description}
 
+${description}
+
 🛒 Buy Now:
-https://allroundadvert.github.io/Prince-jewelries-plug/shop.html`,
+https://allroundadvert.github.io/Prince-luxury-shop-/shop.html`,
 files: [file]
 });
 

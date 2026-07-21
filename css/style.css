@@ -279,6 +279,7 @@ padding:30px;
 border-radius:15px;
 text-align:center;
 transition:.4s;
+color:#fff;
 }
 
 .why-box:hover{
@@ -290,6 +291,22 @@ box-shadow:0 0 20px gold;
 font-size:45px;
 color:#D4AF37;
 margin-bottom:20px;
+}
+
+.why-box h3{
+color:#ffffff;
+font-size:34px;
+font-weight:700;
+margin:15px 0;
+text-shadow:2px 2px 10px rgba(0,0,0,.9);
+}
+
+.why-box p{
+color:#ffffff;
+font-size:20px;
+font-weight:500;
+line-height:1.8;
+text-shadow:2px 2px 10px rgba(0,0,0,.9);
 }
 
 /* Footer */

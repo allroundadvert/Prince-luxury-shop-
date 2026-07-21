@@ -108,20 +108,29 @@ alert("✅ Added to Cart Successfully");
 },{onlyOnce:true});
 
 }
-window.shareProduct = function(name, price, description, image) {
+window.shareProduct = async function(name, price, description, image) {
 
-const message =
-`💎 ${name}
+try {
+
+const response = await fetch(image);
+const blob = await response.blob();
+const file = new File([blob], "product.jpg", { type: blob.type });
+
+await navigator.share({
+title: name,
+text: `💎 ${name}
 
 💰 Price: ₦${price}
 
 📝 ${description}
 
-📷 ${image}`;
+🛒 Buy Now:
+https://allroundadvert.github.io/Prince-jewelries-plug/shop.html`,
+files: [file]
+});
 
-window.open(
-`https://wa.me/?text=${encodeURIComponent(message)}`,
-"_blank"
-);
+} catch (err) {
+console.log(err);
+}
 
 };

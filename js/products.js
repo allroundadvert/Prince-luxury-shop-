@@ -6,7 +6,8 @@ onValue
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
 const container = document.getElementById("product-container");
-
+let allProducts = [];
+let currentCategory = "All";
 const productRef = ref(db,"products");
 
 onValue(productRef,(snapshot)=>{

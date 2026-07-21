@@ -98,3 +98,21 @@ cartDisplay.innerText = cartCount;
 // Welcome Message
 
 console.log("Welcome to Prince Jewelries Plug");
+// Welcome Guide Popup
+window.addEventListener("load", function () {
+
+if (!localStorage.getItem("guideSeen")) {
+
+alert(
+"🛒 HOW TO PLACE YOUR ORDER\n\n" +
+"1. Tap 'Add To Cart'\n" +
+"2. Open the Cart (🛒)\n" +
+"3. Enter your Name, Phone & Address\n" +
+"4. Click WhatsApp or Pay Now"
+);
+
+localStorage.setItem("guideSeen", "yes");
+
+}
+
+});

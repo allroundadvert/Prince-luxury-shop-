@@ -42,7 +42,9 @@ container.innerHTML+=`
 ${product.description}
 
 </p>
-
+<button onclick="shareProduct('${product.name}','${product.price}','${product.description}','${product.image}')">
+📤 Share
+</button>
 <button onclick="addToCart('${child.key}')">
 
 Add To Cart
@@ -106,3 +108,20 @@ alert("✅ Added to Cart Successfully");
 },{onlyOnce:true});
 
 }
+window.shareProduct = function(name, price, description, image) {
+
+const message =
+`💎 ${name}
+
+💰 Price: ₦${price}
+
+📝 ${description}
+
+📷 ${image}`;
+
+window.open(
+`https://wa.me/?text=${encodeURIComponent(message)}`,
+"_blank"
+);
+
+};

@@ -5,9 +5,9 @@ import {
   onValue
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-
-
-// Loader
+// ======================
+// HIDE LOADER
+// ======================
 window.addEventListener("load", () => {
     const loader = document.getElementById("loader");
 
@@ -16,75 +16,37 @@ window.addEventListener("load", () => {
     }
 });
 
-// Header
-window.addEventListener("scroll",function(){
+// ======================
+// HEADER EFFECT
+// ======================
+window.addEventListener("scroll", () => {
 
-const header=document.querySelector("header");
+    const header = document.querySelector("header");
 
-if(!header) return;
+    if (!header) return;
 
-if(window.scrollY>80){
-
-header.style.background="#000";
-header.style.boxShadow="0 5px 20px rgba(212,175,55,.4)";
-
-}else{
-
-header.style.background="rgba(0,0,0,.85)";
-header.style.boxShadow="none";
-
-}
+    if (window.scrollY > 80) {
+        header.style.background = "#000";
+        header.style.boxShadow = "0 5px 20px rgba(212,175,55,.4)";
+    } else {
+        header.style.background = "rgba(0,0,0,.85)";
+        header.style.boxShadow = "none";
+    }
 
 });
 
-// Cart
-const cart=document.getElementById("cart-count");
+// ======================
+// CART COUNT
+// ======================
+const cart = document.getElementById("cart-count");
 
-if(cart){
-
-cart.innerHTML=localStorage.getItem("cartCount")||0;
-
+if (cart) {
+    cart.textContent = localStorage.getItem("cartCount") || "0";
 }
 
+// ======================
 // LOAD PRODUCTS
-
-const container=document.getElementById("product-container");
-
-if(container){
-
-const productRef=ref(db,"products");
-
-onValue(productRef,(snapshot)=>{
-
-container.innerHTML="";
-
-snapshot.forEach((child)=>{
-
-const product=child.val();
-
-container.innerHTML+=`
-
-<div class="product-card">
-
-<img src="${product.image}" alt="${product.name}">
-
-<h3>${product.name}</h3>
-
-<p>₦${product.price}</p>
-
-<button onclick="location.href='product.html'">
-View Product
-</button>
-
-</div>
-
-`;
-
-});
-
-});
-
-}
+// ======================
 const container = document.getElementById("product-container");
 
 if (container) {
@@ -95,6 +57,11 @@ if (container) {
 
         container.innerHTML = "";
 
+        if (!snapshot.exists()) {
+            container.innerHTML = "<h2>No products available.</h2>";
+            return;
+        }
+
         snapshot.forEach((child) => {
 
             const product = child.val();
@@ -104,6 +71,10 @@ if (container) {
                     <img src="${product.image}" alt="${product.name}">
                     <h3>${product.name}</h3>
                     <p>₦${product.price}</p>
+
+                    <button onclick="location.href='product.html?id=${child.key}'">
+                        View Product
+                    </button>
                 </div>
             `;
 

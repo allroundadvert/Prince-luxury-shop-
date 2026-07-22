@@ -138,6 +138,82 @@ const addBtn=document.getElementById("add-cart");
 
 const shareBtn=document.getElementById("share-product");
 
-if(id){
+const snapshot = await get(ref(db, "products/" + id));
 
-const snapshot=
+if (snapshot.exists()) {
+
+    const product = snapshot.val();
+
+    image.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+    `;
+
+    name.textContent = product.name;
+
+    oldPrice.textContent =
+        "₦" + Number(product.oldPrice || 0).toLocaleString();
+
+    price.textContent =
+        "₦" + Number(product.price).toLocaleString();
+
+    description.textContent =
+        product.description || "";
+
+    addBtn.onclick = () => {
+
+        let cart =
+            JSON.parse(localStorage.getItem("cart")) || [];
+
+        cart.push({
+            id: id,
+            name: product.name,
+            price: Number(product.price),
+            image: product.image
+        });
+
+        localStorage.setItem(
+            "cart",
+            JSON.stringify(cart)
+        );
+
+        localStorage.setItem(
+            "cartCount",
+            cart.length
+        );
+
+        alert("Added to cart successfully.");
+
+    };
+
+    shareBtn.onclick = () => {
+
+        const text =
+`*${product.name}*
+
+💰 Price: ₦${Number(product.price).toLocaleString()}
+
+${product.description}
+
+${window.location.href}`;
+
+        window.open(
+            "https://wa.me/?text=" +
+            encodeURIComponent(text),
+            "_blank"
+        );
+
+    };
+
+} else {
+
+    name.textContent = "Product Not Found";
+
+}
+}
+
+</script>
+
+<script src="js/main.js"></script>
+
+</body>
+</html>

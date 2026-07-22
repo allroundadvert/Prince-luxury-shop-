@@ -260,7 +260,9 @@ adminProducts.innerHTML += `
 
 <p>${product.description}</p>
 
-<button onclick="deleteProduct('${child.key}')">
+<button class="delete-btn" onclick="deleteProduct('${child.key}')">
+🗑 Delete Product
+</button>
 
 Delete
 

@@ -118,3 +118,68 @@ Add To Cart
 });
 
 }
+// ==============================
+// VIEW PRODUCT
+// ==============================
+
+window.viewProduct = function(id){
+    location.href = "product.html?id=" + id;
+};
+
+// ==============================
+// SHARE PRODUCT
+// ==============================
+
+window.shareProduct = function(name, price, description, image){
+
+    const message =
+`*${name}*
+
+💰 Price: ₦${Number(price).toLocaleString()}
+
+${description}
+
+🖼️ Image:
+${image}`;
+
+    window.open(
+        "https://wa.me/?text=" + encodeURIComponent(message),
+        "_blank"
+    );
+
+};
+
+// ==============================
+// ADD TO CART
+// ==============================
+
+window.addToCart = function(id){
+
+    const product = allProducts.find(item => item.id === id);
+
+    if(!product){
+        alert("Product not found.");
+        return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.push({
+        id: product.id,
+        name: product.name,
+        price: Number(product.price),
+        image: product.image
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("cartCount", cart.length);
+
+    const cartCount = document.getElementById("cart-count");
+
+    if(cartCount){
+        cartCount.textContent = cart.length;
+    }
+
+    alert(product.name + " added to cart successfully.");
+
+};

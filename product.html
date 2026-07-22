@@ -36,7 +36,25 @@ oldPrice.textContent=p.oldPrice?"₦"+Number(p.oldPrice).toLocaleString():"";
 price.textContent="₦"+Number(p.price).toLocaleString();
 description.textContent=p.description||"";
 addBtn.onclick=()=>{let c=JSON.parse(localStorage.getItem("cart"))||[];c.push({id,name:p.name,price:Number(p.price),image:p.image});localStorage.setItem("cart",JSON.stringify(c));localStorage.setItem("cartCount",c.length);alert("Added to cart");};
-shareBtn.onclick=()=>window.open("https://wa.me/?text="+encodeURIComponent(`*${p.name}*\n\n💰 Price: ₦${Number(p.price).toLocaleString()}\n\n${p.description||""}`),"_blank");
+shareBtn.onclick = () => {
+
+const productLink = "https://allroundadvert.github.io/Prince-luxury-shop-/product.html?id=" + id;
+
+const message = `✨ *${p.name}* ✨
+
+💰 Price: ₦${Number(p.price).toLocaleString()}
+
+${p.description || ""}
+
+🛍️ View Product:
+${productLink}`;
+
+window.open(
+"https://wa.me/?text=" + encodeURIComponent(message),
+"_blank"
+);
+
+};
 }
 }catch(e){console.error(e);name.textContent="Error loading product";}
 }

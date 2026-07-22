@@ -123,9 +123,8 @@ Add To Cart
 // ==============================
 
 window.viewProduct = function(id){
-    location.href = "product.html?id=" + id;
+    window.location.href = "./product.html?id=" + encodeURIComponent(id);
 };
-
 // ==============================
 // SHARE PRODUCT
 // ==============================

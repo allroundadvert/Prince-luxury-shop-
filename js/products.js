@@ -99,7 +99,7 @@ View Product
 
 </button>
 
-<button onclick="shareProduct('${product.name}','${product.price}','${product.description}','${product.image}')">
+onclick="shareProduct('${product.id}','${product.name}','${product.price}','${product.description}')"
 
 📤 Share
 
@@ -129,22 +129,24 @@ window.viewProduct = function(id){
 // SHARE PRODUCT
 // ==============================
 
-window.shareProduct = function(name, price, description, image){
+window.shareProduct = function(id, name, price, description){
 
-    const message =
-`*${name}*
+    const productLink =
+"https://allroundadvert.github.io/Prince-luxury-shop-/product.html?id=" + id;
+
+const message = `✨ *${name}* ✨
 
 💰 Price: ₦${Number(price).toLocaleString()}
 
 ${description}
 
-🖼️ Image:
-${image}`;
+🛍️ View Product:
+${productLink}`;
 
-    window.open(
-        "https://wa.me/?text=" + encodeURIComponent(message),
-        "_blank"
-    );
+window.open(
+"https://wa.me/?text=" + encodeURIComponent(message),
+"_blank"
+);
 
 };
 

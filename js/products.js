@@ -99,8 +99,7 @@ View Product
 
 </button>
 
-onclick="shareProduct('${product.id}','${product.name}','${product.price}','${product.description}')"
-
+<button onclick="shareProduct('${product.id}','${product.name}','${product.price}','${product.description}')">
 📤 Share
 
 </button>

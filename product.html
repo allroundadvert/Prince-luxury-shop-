@@ -1,219 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Product Details | Prince Jewelries Plug</title>
-
 <link rel="stylesheet" href="css/style.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
 <style>
-.product-details{
-max-width:1100px;
-margin:120px auto 50px;
-padding:20px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:40px;
-}
-
-.product-details img{
-width:100%;
-border-radius:15px;
-}
-
-.product-info h1{
-color:#D4AF37;
-margin-bottom:15px;
-}
-
-.old-price{
-text-decoration:line-through;
-color:#999;
-}
-
-.price{
-font-size:32px;
-color:#D4AF37;
-margin:15px 0;
-}
-
-.product-info button{
-width:100%;
-padding:15px;
-margin-top:15px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-font-size:16px;
-font-weight:bold;
-}
-
-.cart-btn{
-background:#D4AF37;
-color:#000;
-}
-
-.share-btn{
-background:#25D366;
-color:#fff;
-}
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<div class="logo">
-<i class="fas fa-gem"></i>
-PRINCE JEWELRIES PLUG
-</div>
-
-<nav>
-<a href="index.html">Home</a>
-<a href="shop.html">Shop</a>
-<a href="cart.html">
-<i class="fas fa-shopping-cart"></i>
-<span id="cart-count">0</span>
-</a>
-</nav>
-
-</header>
-
+.product-details{max-width:1100px;margin:120px auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px}
+.product-details img{width:100%;border-radius:12px}.price{color:#D4AF37;font-size:30px}.old-price{text-decoration:line-through;color:#888}
+button{width:100%;padding:14px;margin-top:12px;border:none;border-radius:8px;font-weight:bold}.cart-btn{background:#D4AF37}.share-btn{background:#25D366;color:#fff}
+</style></head><body>
+<header><h2>PRINCE JEWELRIES PLUG</h2></header>
 <section class="product-details">
-
 <div id="product-image"></div>
-
-<div class="product-info">
-
+<div>
 <h1 id="product-name">Loading...</h1>
-
-<p class="old-price" id="old-price"></p>
-
-<h2 class="price" id="price"></h2>
-
+<p id="old-price" class="old-price"></p>
+<h2 id="price" class="price"></h2>
 <p id="description"></p>
-
-<button class="cart-btn" id="add-cart">
-Add To Cart
-</button>
-
-<button class="share-btn" id="share-product">
-Share On WhatsApp
-</button>
-
-</div>
-
-</section>
-
+<button id="add-cart" class="cart-btn">Add To Cart</button>
+<button id="share-product" class="share-btn">Share On WhatsApp</button>
+</div></section>
 <script type="module">
-
 import { db } from "./firebase-config.js";
-
-import {
-ref,
-get
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const params=new URLSearchParams(window.location.search);
-
-const id=params.get("id");
-
-const image=document.getElementById("product-image");
-
-const name=document.getElementById("product-name");
-
-const oldPrice=document.getElementById("old-price");
-
-const price=document.getElementById("price");
-
-const description=document.getElementById("description");
-
-const addBtn=document.getElementById("add-cart");
-
-const shareBtn=document.getElementById("share-product");
-
-const snapshot = await get(ref(db, "products/" + id));
-
-if (snapshot.exists()) {
-
-    const product = snapshot.val();
-
-    image.innerHTML = `
-        <img src="${product.image}" alt="${product.name}">
-    `;
-
-    name.textContent = product.name;
-
-    oldPrice.textContent =
-        "₦" + Number(product.oldPrice || 0).toLocaleString();
-
-    price.textContent =
-        "₦" + Number(product.price).toLocaleString();
-
-    description.textContent =
-        product.description || "";
-
-    addBtn.onclick = () => {
-
-        let cart =
-            JSON.parse(localStorage.getItem("cart")) || [];
-
-        cart.push({
-            id: id,
-            name: product.name,
-            price: Number(product.price),
-            image: product.image
-        });
-
-        localStorage.setItem(
-            "cart",
-            JSON.stringify(cart)
-        );
-
-        localStorage.setItem(
-            "cartCount",
-            cart.length
-        );
-
-        alert("Added to cart successfully.");
-
-    };
-
-    shareBtn.onclick = () => {
-
-        const text =
-`*${product.name}*
-
-💰 Price: ₦${Number(product.price).toLocaleString()}
-
-${product.description}
-
-${window.location.href}`;
-
-        window.open(
-            "https://wa.me/?text=" +
-            encodeURIComponent(text),
-            "_blank"
-        );
-
-    };
-
-} else {
-
-    name.textContent = "Product Not Found";
-
+import {ref,get} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+const id=new URLSearchParams(location.search).get("id");
+const image=document.getElementById("product-image"),name=document.getElementById("product-name"),oldPrice=document.getElementById("old-price"),price=document.getElementById("price"),description=document.getElementById("description"),addBtn=document.getElementById("add-cart"),shareBtn=document.getElementById("share-product");
+if(!id){name.textContent="Product Not Found";}
+else{
+try{
+const s=await get(ref(db,"products/"+id));
+if(!s.exists()){name.textContent="Product Not Found";}
+else{
+const p=s.val();
+image.innerHTML=`<img src="${p.image}" alt="${p.name}">`;
+name.textContent=p.name;
+oldPrice.textContent=p.oldPrice?"₦"+Number(p.oldPrice).toLocaleString():"";
+price.textContent="₦"+Number(p.price).toLocaleString();
+description.textContent=p.description||"";
+addBtn.onclick=()=>{let c=JSON.parse(localStorage.getItem("cart"))||[];c.push({id,name:p.name,price:Number(p.price),image:p.image});localStorage.setItem("cart",JSON.stringify(c));localStorage.setItem("cartCount",c.length);alert("Added to cart");};
+shareBtn.onclick=()=>window.open("https://wa.me/?text="+encodeURIComponent(`*${p.name}*\n\n💰 Price: ₦${Number(p.price).toLocaleString()}\n\n${p.description||""}`),"_blank");
 }
+}catch(e){console.error(e);name.textContent="Error loading product";}
 }
-
 </script>
-
-<script src="js/main.js"></script>
-
-</body>
-</html>
+</body></html>

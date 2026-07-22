@@ -96,3 +96,30 @@ View Product
 });
 
 }
+const container = document.getElementById("product-container");
+
+if (container) {
+
+    const productRef = ref(db, "products");
+
+    onValue(productRef, (snapshot) => {
+
+        container.innerHTML = "";
+
+        snapshot.forEach((child) => {
+
+            const product = child.val();
+
+            container.innerHTML += `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>₦${product.price}</p>
+                </div>
+            `;
+
+        });
+
+    });
+
+}

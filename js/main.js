@@ -8,19 +8,12 @@ import {
 
 
 // Loader
-window.addEventListener("load", function () {
+window.addEventListener("load", () => {
+    const loader = document.getElementById("loader");
 
-const loader = document.getElementById("loader");
-
-if(loader){
-
-setTimeout(()=>{
-loader.style.opacity="0";
-loader.style.visibility="hidden";
-},1500);
-
-}
-
+    if (loader) {
+        loader.style.display = "none";
+    }
 });
 
 // Header

@@ -6,21 +6,17 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 // ======================
-// HIDE LOADER
+// LOADER
 // ======================
 window.addEventListener("load", () => {
     const loader = document.getElementById("loader");
-
-    if (loader) {
-        loader.style.display = "none";
-    }
+    if (loader) loader.style.display = "none";
 });
 
 // ======================
 // HEADER EFFECT
 // ======================
 window.addEventListener("scroll", () => {
-
     const header = document.querySelector("header");
 
     if (!header) return;
@@ -32,7 +28,6 @@ window.addEventListener("scroll", () => {
         header.style.background = "rgba(0,0,0,.85)";
         header.style.boxShadow = "none";
     }
-
 });
 
 // ======================
@@ -51,9 +46,7 @@ const container = document.getElementById("product-container");
 
 if (container) {
 
-    const productRef = ref(db, "products");
-
-    onValue(productRef, (snapshot) => {
+    onValue(ref(db, "products"), (snapshot) => {
 
         container.innerHTML = "";
 
@@ -69,8 +62,10 @@ if (container) {
             container.innerHTML += `
                 <div class="product-card">
                     <img src="${product.image}" alt="${product.name}">
+
                     <h3>${product.name}</h3>
-                    <p>₦${product.price}</p>
+
+                    <p>₦${Number(product.price).toLocaleString()}</p>
 
                     <button onclick="location.href='product.html?id=${child.key}'">
                         View Product

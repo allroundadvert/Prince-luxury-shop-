@@ -1,1 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Details | Prince Jewelries Plug</title>
 
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<style>
+.product-details{
+max-width:1100px;
+margin:120px auto 50px;
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:40px;
+}
+
+.product-details img{
+width:100%;
+border-radius:15px;
+}
+
+.product-info h1{
+color:#D4AF37;
+margin-bottom:15px;
+}
+
+.old-price{
+text-decoration:line-through;
+color:#999;
+}
+
+.price{
+font-size:32px;
+color:#D4AF37;
+margin:15px 0;
+}
+
+.product-info button{
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+font-weight:bold;
+}
+
+.cart-btn{
+background:#D4AF37;
+color:#000;
+}
+
+.share-btn{
+background:#25D366;
+color:#fff;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<i class="fas fa-gem"></i>
+PRINCE JEWELRIES PLUG
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="cart.html">
+<i class="fas fa-shopping-cart"></i>
+<span id="cart-count">0</span>
+</a>
+</nav>
+
+</header>
+
+<section class="product-details">
+
+<div id="product-image"></div>
+
+<div class="product-info">
+
+<h1 id="product-name">Loading...</h1>
+
+<p class="old-price" id="old-price"></p>
+
+<h2 class="price" id="price"></h2>
+
+<p id="description"></p>
+
+<button class="cart-btn" id="add-cart">
+Add To Cart
+</button>
+
+<button class="share-btn" id="share-product">
+Share On WhatsApp
+</button>
+
+</div>
+
+</section>
+
+<script type="module">
+
+import { db } from "./firebase-config.js";
+
+import {
+ref,
+get
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const params=new URLSearchParams(window.location.search);
+
+const id=params.get("id");
+
+const image=document.getElementById("product-image");
+
+const name=document.getElementById("product-name");
+
+const oldPrice=document.getElementById("old-price");
+
+const price=document.getElementById("price");
+
+const description=document.getElementById("description");
+
+const addBtn=document.getElementById("add-cart");
+
+const shareBtn=document.getElementById("share-product");
+
+if(id){
+
+const snapshot=

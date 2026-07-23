@@ -1,287 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Admin Dashboard | Prince Jewelries Plug</title>
-
-<link rel="stylesheet" href="../css/style.css">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-</head>
-
-<body>
-
-<header>
-
-<div class="logo">
-
-💎 PRINCE JEWELRIES PLUG ADMIN
-
-</div>
-
-</header>
-
-<section class="dashboard-stats">
-
-<div class="product-card">
-<h3>Total Products</h3>
-<h1 id="totalProducts">0</h1>
-</div>
-
-<div class="product-card">
-<h3>Total Orders</h3>
-<h1 id="totalOrders">0</h1>
-</div>
-
-<div class="product-card">
-<h3>Total Revenue</h3>
-<h1 id="totalRevenue">₦0</h1>
-</div>
-
-<div class="product-card">
-<h3>Delivered Orders</h3>
-<h1 id="deliveredOrders">0</h1>
-</div>
-
-<div class="product-card">
-<h3>Pending Orders</h3>
-<h1 id="pendingOrders">0</h1>
-</div>
-
-</section>
-
-<section class="products" style="margin-top:120px;">
-
-<h2>Upload New Product</h2>
-
-<input type="text" id="productName" placeholder="Product Name">
-
-<br><br>
-
-<input type="number" id="productPrice" placeholder="Product Price">
-
-<br><br>
-
-<input type="number" id="oldPrice" placeholder="Old Price">
-
-<br><br>
-
-<input type="number" id="productQuantity" placeholder="Quantity Available">
-
-<br><br>
-
-<select id="productCategory">
-    <option value="">Select Category</option>
-    <option value="Jewelries">Jewelries</option>
-    <option value="Perfumes">Perfumes</option>
-    <option value="Male Clothing">Male Clothing</option>
-    <option value="Female Clothing">Female Clothing</option>
-    <option value="Mobile Accessories">Mobile Accessories</option>
-    <option value="More">More</option>
-</select>
-
-<br><br>
-
-<textarea id="productDescription" placeholder="Product Description"></textarea>
-
-<br><br>
-
-<input type="text" id="productImage" placeholder="Paste Product Image URL">
-
-<br><br>
-
-<button class="shop-btn" id="uploadBtn">
-
-Upload Product
-
-</button>
-
-
-
-
-</section>
-
-<section class="products">
-
-<h2>Uploaded Products</h2>
-
-<div id="adminProducts"></div>
-
-</section>
-
-
-
-
-
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Product Details | Prince Jewelries Plug</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.product-details{max-width:1100px;margin:120px auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px}
+.product-details img{width:100%;border-radius:12px}.price{color:#D4AF37;font-size:30px}.old-price{text-decoration:line-through;color:#888}
+button{width:100%;padding:14px;margin-top:12px;border:none;border-radius:8px;font-weight:bold}.cart-btn{background:#D4AF37}.share-btn{background:#25D366;color:#fff}
+</style></head><body>
+<header><h2>PRINCE JEWELRIES PLUG</h2></header>
+<section class="product-details">
+<div id="product-image"></div>
+<div>
+<h1 id="product-name">Loading...</h1>
+<p id="old-price" class="old-price"></p>
+<h2 id="price" class="price"></h2>
+<p id="description"></p>
+<button id="add-cart" class="cart-btn">Add To Cart</button>
+<button id="share-product" class="share-btn">Share On WhatsApp</button>
+  <button onclick="location.href='shop.html'" class="cart-btn">
+← Continue Shopping
+  </button>
+</div></section>
 <script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-
-import {
-getDatabase,
-ref,
-push,
-set,
-onValue,
-remove
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
-const firebaseConfig = {
-
-apiKey: "AIzaSyB1gRwZo8hFRmKl4jNXlyngLWZrCWvQAh0",
-
-authDomain: "prince-jewelries-plug.firebaseapp.com",
-
-databaseURL: "https://prince-jewelries-plug-default-rtdb.firebaseio.com",
-
-projectId: "prince-jewelries-plug",
-
-storageBucket: "prince-jewelries-plug.firebasestorage.app",
-
-messagingSenderId: "412766918362",
-
-appId: "1:412766918362:web:c7413e8c1c6664c06db7e3"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getDatabase(app);
-
-const uploadBtn = document.getElementById("uploadBtn");
-
-uploadBtn.addEventListener("click", uploadProduct);
-
-async function uploadProduct(){
-
-const name = document.getElementById("productName").value.trim();
-
-const price = document.getElementById("productPrice").value;
-
-const oldPrice = document.getElementById("oldPrice").value;
-
-const quantity = document.getElementById("productQuantity").value;
-
-const category = document.getElementById("productCategory").value.trim();
-
-const description = document.getElementById("productDescription").value.trim();
-
-const image = document.getElementById("productImage").value.trim();
-
-if(!name || !price || !quantity || !category || !description || !image){
-
-alert("Please complete all fields.");
-
-return;
-
-}
-
+import { db } from "./firebase-config.js";
+import {ref,get} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+const id=new URLSearchParams(location.search).get("id");
+const image=document.getElementById("product-image"),name=document.getElementById("product-name"),oldPrice=document.getElementById("old-price"),price=document.getElementById("price"),description=document.getElementById("description"),addBtn=document.getElementById("add-cart"),shareBtn=document.getElementById("share-product");
+if(!id){name.textContent="Product Not Found";}
+else{
 try{
+const s=await get(ref(db,"products/"+id));
+if(!s.exists()){name.textContent="Product Not Found";}
+else{
+const p=s.val();
+image.innerHTML=`<img src="${p.image}" alt="${p.name}">`;
+name.textContent=p.name;
+oldPrice.textContent=p.oldPrice?"₦"+Number(p.oldPrice).toLocaleString():"";
+price.textContent="₦"+Number(p.price).toLocaleString();
+description.textContent=p.description||"";
+addBtn.onclick=()=>{let c=JSON.parse(localStorage.getItem("cart"))||[];c.push({id,name:p.name,price:Number(p.price),image:p.image});localStorage.setItem("cart",JSON.stringify(c));localStorage.setItem("cartCount",c.length);alert("Added to cart");};
+shareBtn.onclick = () => {
 
-const productRef = push(ref(db,"products"));
+const productLink = "https://allroundadvert.github.io/Prince-luxury-shop-/product.html?id=" + id;
 
-await set(productRef,{
+const message = `✨ *${p.name}* ✨
 
-name:name,
+💰 Price: ₦${Number(p.price).toLocaleString()}
 
-price:Number(price),
+${p.description || ""}
 
-oldPrice:Number(oldPrice || 0),
+🛍️ View Product:
+${productLink}`;
 
-quantity:Number(quantity),
+window.open(
+"https://wa.me/?text=" + encodeURIComponent(message),
+"_blank"
+);
 
-category:category,
-
-description:description,
-
-image:image,
-
-createdAt:Date.now()
-
-});
-
-alert("Product uploaded successfully!");
-
-document.getElementById("productName").value="";
-
-document.getElementById("productPrice").value="";
-
-document.getElementById("oldPrice").value="";
-
-document.getElementById("productQuantity").value="";
-
-document.getElementById("productCategory").value="";
-
-document.getElementById("productDescription").value="";
-
-document.getElementById("productImage").value="";
-
-}catch(error){
-
-alert(error.message);
-
-}
-
-}
-  const adminProducts = document.getElementById("adminProducts");
-
-onValue(ref(db,"products"), (snapshot)=>{
-
-adminProducts.innerHTML = "";
-
-let totalProducts = 0;
-
-snapshot.forEach((child)=>{
-
-totalProducts++;
-
-const product = child.val();
-
-const card = document.createElement("div");
-card.className = "product-card";
-
-card.innerHTML = `
-<img src="${product.image}" width="120">
-<h3>${product.name}</h3>
-<p><strong>Price:</strong> ₦${Number(product.price).toLocaleString()}</p>
-<p><strong>Old Price:</strong> ₦${Number(product.oldPrice || 0).toLocaleString()}</p>
-<p><strong>Quantity:</strong> ${product.quantity}</p>
-<p><strong>Category:</strong> ${product.category}</p>
-<p>${product.description}</p>
-`;
-
-const btn = document.createElement("button");
-btn.className = "delete-btn";
-btn.textContent = "Delete Product";
-
-btn.addEventListener("click", () => {
-    if(confirm("Delete this product?")){
-        remove(ref(db, "products/" + child.key));
-    }
-});
-
-card.appendChild(btn);
-adminProducts.appendChild(card);
-
-`;
-});
-
-document.getElementById("totalProducts").textContent = totalProducts;
-
-});
-
-window.deleteProduct = function(id){
-    if(confirm("Delete this product?")){
-        remove(ref(db,"products/" + id));
-    }
 };
-
+}
+}catch(e){console.error(e);name.textContent="Error loading product";}
+}
 </script>
-
-</body>
-</html>
+</body></html>

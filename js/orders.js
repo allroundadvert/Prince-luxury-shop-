@@ -56,6 +56,31 @@ ${order.status}
 
 <p><strong>Reference:</strong> ${order.paymentReference}</p>
 
+<h3>Products Ordered</h3>
+
+${(order.cart || []).map(item => `
+
+<div style="display:flex;gap:15px;align-items:center;margin:15px 0;padding:10px;border:1px solid #ddd;border-radius:10px;">
+
+<img src="${item.image}"
+style="width:80px;height:80px;object-fit:cover;border-radius:8px;">
+
+<div>
+
+<h4>${item.name}</h4>
+
+<p><strong>Price:</strong> ₦${Number(item.price).toLocaleString()}</p>
+
+<p><strong>Quantity:</strong> ${item.quantity || 1}</p>
+
+<p><strong>Subtotal:</strong> ₦${Number((item.quantity || 1) * item.price).toLocaleString()}</p>
+
+</div>
+
+</div>
+
+`).join("")}
+
 <button onclick="markDelivered('${child.key}')">
 
 Mark as Delivered

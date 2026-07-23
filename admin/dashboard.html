@@ -242,33 +242,31 @@ totalProducts++;
 
 const product = child.val();
 
-adminProducts.innerHTML += `
+const card = document.createElement("div");
+card.className = "product-card";
 
-<div class="product-card">
-
+card.innerHTML = `
 <img src="${product.image}" width="120">
-
 <h3>${product.name}</h3>
-
 <p><strong>Price:</strong> ₦${Number(product.price).toLocaleString()}</p>
-
 <p><strong>Old Price:</strong> ₦${Number(product.oldPrice || 0).toLocaleString()}</p>
-
 <p><strong>Quantity:</strong> ${product.quantity}</p>
-
 <p><strong>Category:</strong> ${product.category}</p>
-
 <p>${product.description}</p>
+`;
 
-<button class="shop-btn" onclick="editProduct('${child.key}')">
-Edit Product
-</button>
+const btn = document.createElement("button");
+btn.className = "delete-btn";
+btn.textContent = "Delete Product";
 
-<button class="delete-btn" onclick="deleteProduct('${child.key}')">
-Delete Product
-</button>
+btn.addEventListener("click", () => {
+    if(confirm("Delete this product?")){
+        remove(ref(db, "products/" + child.key));
+    }
+});
 
-</div>
+card.appendChild(btn);
+adminProducts.appendChild(card);
 
 `;
 });

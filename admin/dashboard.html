@@ -1,263 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Admin Dashboard | Prince Jewelries Plug</title>
-
-<link rel="stylesheet" href="../css/style.css">
-
+<title>Prince Jewelries Plug | Luxury Gold Jewelry Store</title>
+<meta name="description" content="Buy Premium Gold Jewelries Online. Fast Delivery Across Nigeria.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
 </head>
-
 <body>
 
-<header>
-
-<div class="logo">
-
-💎 PRINCE JEWELRIES PLUG ADMIN
-
+<div id="loader">
+<div class="gold-ring"></div>
+<h2>PRINCE JEWELRIES PLUG</h2>
 </div>
 
+<header>
+<div class="logo"><i class="fas fa-gem"></i><span>PRINCE JEWELRIES PLUG</span></div>
+<nav>
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="cart.html"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></a>
+</nav>
 </header>
 
-<section class="dashboard-stats">
-
-<div class="product-card">
-<h3>Total Products</h3>
-<h1 id="totalProducts">0</h1>
+<main>
+<section class="hero">
+<div class="overlay">
+<h1>Luxury Gold Jewelries For Elegant People</h1>
+<p>Discover premium necklaces, rings, bangles, earrings, watches and more at unbeatable prices.</p>
+<a href="shop.html" class="shop-btn">SHOP NOW</a>
 </div>
-
-<div class="product-card">
-<h3>Total Orders</h3>
-<h1 id="totalOrders">0</h1>
-</div>
-
-<div class="product-card">
-<h3>Total Revenue</h3>
-<h1 id="totalRevenue">₦0</h1>
-</div>
-
-<div class="product-card">
-<h3>Delivered Orders</h3>
-<h1 id="deliveredOrders">0</h1>
-</div>
-
-<div class="product-card">
-<h3>Pending Orders</h3>
-<h1 id="pendingOrders">0</h1>
-</div>
-
 </section>
 
-<section class="products" style="margin-top:120px;">
+<section class="search-section">
+<input type="text" id="search" placeholder="Search Jewelries...">
+<button><i class="fas fa-search"></i></button>
+</section>
 
-<h2>Upload New Product</h2>
-
-<input type="text" id="productName" placeholder="Product Name">
-
-<br><br>
-
-<input type="number" id="productPrice" placeholder="Product Price">
-
-<br><br>
-
-<input type="number" id="oldPrice" placeholder="Old Price">
-
-<br><br>
-
-<input type="number" id="productQuantity" placeholder="Quantity Available">
-
-<br><br>
-
-<select id="productCategory">
-    <option value="">Select Category</option>
-    <option value="Jewelries">Jewelries</option>
-    <option value="Perfumes">Perfumes</option>
-    <option value="Male Clothing">Male Clothing</option>
-    <option value="Female Clothing">Female Clothing</option>
-    <option value="Mobile Accessories">Mobile Accessories</option>
-    <option value="More">More</option>
-</select>
-
-<br><br>
-
-<textarea id="productDescription" placeholder="Product Description"></textarea>
-
-<br><br>
-
-<input type="text" id="productImage" placeholder="Paste Product Image URL">
-
-<br><br>
-
-<button class="shop-btn" id="uploadBtn">
-
-Upload Product
-
-</button>
-
-
-
-
+<section class="category">
+<h2>Shop Categories</h2>
+<div class="category-container">
+<div class="category-box"><i class="fas fa-ring"></i><h3>Rings</h3></div>
+<div class="category-box"><i class="fas fa-gem"></i><h3>Necklaces</h3></div>
+<div class="category-box"><i class="fas fa-clock"></i><h3>Watches</h3></div>
+<div class="category-box"><i class="fas fa-star"></i><h3>Earrings</h3></div>
+<div class="category-box"><i class="fas fa-crown"></i><h3>Luxury Sets</h3></div>
+</div>
 </section>
 
 <section class="products">
-
-<h2>Uploaded Products</h2>
-
-<div id="adminProducts"></div>
-
+<h2>Featured Products</h2>
+<div id="product-container"></div>
 </section>
 
-
-
-
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-
-import {
-getDatabase,
-ref,
-push,
-set,
-onValue,
-remove
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
-const firebaseConfig = {
-
-apiKey: "AIzaSyB1gRwZo8hFRmKl4jNXlyngLWZrCWvQAh0",
-
-authDomain: "prince-jewelries-plug.firebaseapp.com",
-
-databaseURL: "https://prince-jewelries-plug-default-rtdb.firebaseio.com",
-
-projectId: "prince-jewelries-plug",
-
-storageBucket: "prince-jewelries-plug.firebasestorage.app",
-
-messagingSenderId: "412766918362",
-
-appId: "1:412766918362:web:c7413e8c1c6664c06db7e3"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getDatabase(app);
-
-const uploadBtn = document.getElementById("uploadBtn");
-
-uploadBtn.addEventListener("click", uploadProduct);
-
-async function uploadProduct(){
-
-const name = document.getElementById("productName").value.trim();
-
-const price = document.getElementById("productPrice").value;
-
-const oldPrice = document.getElementById("oldPrice").value;
-
-const quantity = document.getElementById("productQuantity").value;
-
-const category = document.getElementById("productCategory").value.trim();
-
-const description = document.getElementById("productDescription").value.trim();
-
-const image = document.getElementById("productImage").value.trim();
-
-if(!name || !price || !quantity || !category || !description || !image){
-
-alert("Please complete all fields.");
-
-return;
-
-}
-
-try{
-
-const productRef = push(ref(db,"products"));
-
-await set(productRef,{
-
-name:name,
-
-price:Number(price),
-
-oldPrice:Number(oldPrice || 0),
-
-quantity:Number(quantity),
-
-category:category,
-
-description:description,
-
-image:image,
-
-createdAt:Date.now()
-
-});
-
-alert("Product uploaded successfully!");
-
-document.getElementById("productName").value="";
-
-document.getElementById("productPrice").value="";
-
-document.getElementById("oldPrice").value="";
-
-document.getElementById("productQuantity").value="";
-
-document.getElementById("productCategory").value="";
-
-document.getElementById("productDescription").value="";
-
-document.getElementById("productImage").value="";
-
-}catch(error){
-
-alert(error.message);
-
-}
-
-}
-  const adminProducts = document.getElementById("adminProducts");
-
-onValue(ref(db,"products"), (snapshot)=>{
-
-adminProducts.innerHTML = "";
-
-let totalProducts = 0;
-
-snapshot.forEach((child)=>{
-
-totalProducts++;
-
-const product = child.val();
-
-adminProducts.innerHTML += `
-
-<div class="product-card">
-
-<img src="${product.image}" width="120">
-
-<h3>${product.name}</h3>
-
-<p><strong>Price:</strong> ₦${Number(product.price).toLocaleString()}</p>
-
-<p><strong>Old Price:</strong> ₦${Number(product.oldPrice || 0).toLocaleString()}</p>
-
-<p><strong>Quantity:</strong> ${product.quantity}</p>
-
-<p><strong>Category:</strong> ${product.category}</p>
-
-<p>${product.description}</p>
-
-<button class="delete-btn" onclick="de
+<section class="why">
+<h2>Why Shop With Us?</h2>
+<div class="why-container">
+<div class="why-box"><i class="fas fa-award"></i><h3>Premium Quality</h3><p>Only genuine luxury jewelries.</p></div>
+<div class="why-box"><i class="fas fa-truck"></i><h3>Nationwide Delivery</h3><p>Fast delivery anywhere in Nigeria.</p></div>
+<div class="why-box"><i class="fas fa-credit-card"></i><h3>Secure Payment</h3><p>Pay safely using Paystack.</p></div>
+<div class="why-box"><i class="fab fa-whatsapp"></i><h3>WhatsApp Support</h3><p>Instant customer assistance.</p></div>
+</div>
+</section>
+</main>
+
+<footer>
+<h2>Prince Jewelries Plug</h2>
+<p>Your Number One Luxury Jewelry Store.</p>
+<div class="socials">
+<a href="#"><i class="fab fa-facebook"></i></a>
+<a href="#"><i class="fab fa-instagram"></i></a>
+<a href="#"><i class="fab fa-tiktok"></i></a>
+<a href="#"><i class="fab fa-whatsapp"></i></a>
+</div>
+<p>© 2026 Prince Jewelries Plug. All Rights Reserved.</p>
+</footer>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

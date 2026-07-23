@@ -260,6 +260,10 @@ adminProducts.innerHTML += `
 
 <p>${product.description}</p>
 
+<button class="shop-btn" onclick="editProduct('${child.key}')">
+Edit Product
+</button>
+
 <button class="delete-btn" onclick="deleteProduct('${child.key}')">
 Delete Product
 </button>

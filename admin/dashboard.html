@@ -260,4 +260,26 @@ adminProducts.innerHTML += `
 
 <p>${product.description}</p>
 
-<button class="delete-btn" onclick="de
+<button class="delete-btn" onclick="deleteProduct('${child.key}')">
+Delete Product
+</button>
+
+</div>
+
+`;
+});
+
+document.getElementById("totalProducts").textContent = totalProducts;
+
+});
+
+window.deleteProduct = function(id){
+    if(confirm("Delete this product?")){
+        remove(ref(db,"products/" + id));
+    }
+};
+
+</script>
+
+</body>
+</html>

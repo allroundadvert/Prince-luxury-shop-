@@ -1,31 +1,263 @@
-/* Replace your current style.css with this version */
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
-body{background:#050505;color:#fff;overflow-x:hidden}
-#loader{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999}
-.gold-ring{width:80px;height:80px;border:5px solid #D4AF37;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px}
-@keyframes spin{to{transform:rotate(360deg)}}
-#loader h2{color:#D4AF37}
-header{position:fixed;top:0;left:0;width:100%;padding:15px 8%;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:1000}
-.logo{display:flex;gap:10px;align-items:center;color:#D4AF37;font-weight:700;font-size:24px}
-nav{display:flex;gap:20px;align-items:center}
-nav a{text-decoration:none;color:#fff}
-nav a:hover{color:#D4AF37}
-#cart-count{background:#D4AF37;color:#000;padding:3px 8px;border-radius:20px}
-.hero{min-height:85vh;padding-top:110px;background:url('../images/backgrounds/hero.jpg') center/cover no-repeat;display:flex;justify-content:center;align-items:center;text-align:center}
-.overlay{width:100%;min-height:85vh;background:rgba(0,0,0,.65);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px}
-.overlay h1{font-size:55px;line-height:1.2;color:#fff;margin-bottom:25px}
-.overlay p{max-width:750px;font-size:22px;line-height:1.8;margin-bottom:35px}
-.shop-btn{padding:18px 45px;background:#D4AF37;color:#000;border-radius:50px;text-decoration:none;font-weight:700}
-.search-section,.products,.category,.why,footer{padding:60px 8%}
-.search-section{display:flex;gap:10px;background:#111}
-.search-section input{flex:1;padding:15px;border:none;border-radius:40px}
-.search-section button{padding:15px 30px;border:none;border-radius:40px;background:#D4AF37}
-.category h2,.products h2,.why h2,footer h2{text-align:center;color:#D4AF37;margin-bottom:30px}
-.category-container,.why-container,#product-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px}
-.category-box,.why-box{background:#111;padding:30px;border-radius:15px;text-align:center}
-.category-box i,.why-box i{font-size:42px;color:#D4AF37;margin-bottom:15px}
-.socials a{color:#D4AF37;font-size:28px;margin:0 10px}
-img{max-width:100%;height:auto}
-@media(max-width:768px){header{padding:18px;flex-direction:column}nav{margin-top:18px;flex-wrap:wrap;justify-content:center}.hero{min-height:80vh;padding-top:100px}.overlay{min-height:80vh;padding:20px}.overlay h1{font-size:38px}.overlay p{font-size:18px}.search-section{flex-direction:column;padding:40px 20px}.category,.products,.why,footer{padding:50px 20px}}
-.delete-btn{background:#d32f2f;color:#fff;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;margin-top:10px}
-.delete-btn:hover{background:#b71c1c}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | Prince Jewelries Plug</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+💎 PRINCE JEWELRIES PLUG ADMIN
+
+</div>
+
+</header>
+
+<section class="dashboard-stats">
+
+<div class="product-card">
+<h3>Total Products</h3>
+<h1 id="totalProducts">0</h1>
+</div>
+
+<div class="product-card">
+<h3>Total Orders</h3>
+<h1 id="totalOrders">0</h1>
+</div>
+
+<div class="product-card">
+<h3>Total Revenue</h3>
+<h1 id="totalRevenue">₦0</h1>
+</div>
+
+<div class="product-card">
+<h3>Delivered Orders</h3>
+<h1 id="deliveredOrders">0</h1>
+</div>
+
+<div class="product-card">
+<h3>Pending Orders</h3>
+<h1 id="pendingOrders">0</h1>
+</div>
+
+</section>
+
+<section class="products" style="margin-top:120px;">
+
+<h2>Upload New Product</h2>
+
+<input type="text" id="productName" placeholder="Product Name">
+
+<br><br>
+
+<input type="number" id="productPrice" placeholder="Product Price">
+
+<br><br>
+
+<input type="number" id="oldPrice" placeholder="Old Price">
+
+<br><br>
+
+<input type="number" id="productQuantity" placeholder="Quantity Available">
+
+<br><br>
+
+<select id="productCategory">
+    <option value="">Select Category</option>
+    <option value="Jewelries">Jewelries</option>
+    <option value="Perfumes">Perfumes</option>
+    <option value="Male Clothing">Male Clothing</option>
+    <option value="Female Clothing">Female Clothing</option>
+    <option value="Mobile Accessories">Mobile Accessories</option>
+    <option value="More">More</option>
+</select>
+
+<br><br>
+
+<textarea id="productDescription" placeholder="Product Description"></textarea>
+
+<br><br>
+
+<input type="text" id="productImage" placeholder="Paste Product Image URL">
+
+<br><br>
+
+<button class="shop-btn" id="uploadBtn">
+
+Upload Product
+
+</button>
+
+
+
+
+</section>
+
+<section class="products">
+
+<h2>Uploaded Products</h2>
+
+<div id="adminProducts"></div>
+
+</section>
+
+
+
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+import {
+getDatabase,
+ref,
+push,
+set,
+onValue,
+remove
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+const firebaseConfig = {
+
+apiKey: "AIzaSyB1gRwZo8hFRmKl4jNXlyngLWZrCWvQAh0",
+
+authDomain: "prince-jewelries-plug.firebaseapp.com",
+
+databaseURL: "https://prince-jewelries-plug-default-rtdb.firebaseio.com",
+
+projectId: "prince-jewelries-plug",
+
+storageBucket: "prince-jewelries-plug.firebasestorage.app",
+
+messagingSenderId: "412766918362",
+
+appId: "1:412766918362:web:c7413e8c1c6664c06db7e3"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+const uploadBtn = document.getElementById("uploadBtn");
+
+uploadBtn.addEventListener("click", uploadProduct);
+
+async function uploadProduct(){
+
+const name = document.getElementById("productName").value.trim();
+
+const price = document.getElementById("productPrice").value;
+
+const oldPrice = document.getElementById("oldPrice").value;
+
+const quantity = document.getElementById("productQuantity").value;
+
+const category = document.getElementById("productCategory").value.trim();
+
+const description = document.getElementById("productDescription").value.trim();
+
+const image = document.getElementById("productImage").value.trim();
+
+if(!name || !price || !quantity || !category || !description || !image){
+
+alert("Please complete all fields.");
+
+return;
+
+}
+
+try{
+
+const productRef = push(ref(db,"products"));
+
+await set(productRef,{
+
+name:name,
+
+price:Number(price),
+
+oldPrice:Number(oldPrice || 0),
+
+quantity:Number(quantity),
+
+category:category,
+
+description:description,
+
+image:image,
+
+createdAt:Date.now()
+
+});
+
+alert("Product uploaded successfully!");
+
+document.getElementById("productName").value="";
+
+document.getElementById("productPrice").value="";
+
+document.getElementById("oldPrice").value="";
+
+document.getElementById("productQuantity").value="";
+
+document.getElementById("productCategory").value="";
+
+document.getElementById("productDescription").value="";
+
+document.getElementById("productImage").value="";
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+}
+  const adminProducts = document.getElementById("adminProducts");
+
+onValue(ref(db,"products"), (snapshot)=>{
+
+adminProducts.innerHTML = "";
+
+let totalProducts = 0;
+
+snapshot.forEach((child)=>{
+
+totalProducts++;
+
+const product = child.val();
+
+adminProducts.innerHTML += `
+
+<div class="product-card">
+
+<img src="${product.image}" width="120">
+
+<h3>${product.name}</h3>
+
+<p><strong>Price:</strong> ₦${Number(product.price).toLocaleString()}</p>
+
+<p><strong>Old Price:</strong> ₦${Number(product.oldPrice || 0).toLocaleString()}</p>
+
+<p><strong>Quantity:</strong> ${product.quantity}</p>
+
+<p><strong>Category:</strong> ${product.category}</p>
+
+<p>${product.description}</p>
+
+<button class="delete-btn" onclick="de
